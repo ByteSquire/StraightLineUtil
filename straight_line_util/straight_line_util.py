@@ -24,6 +24,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
+from qgis.core import Qgis
 # Initialize Qt resources from file resources.py
 from .resources import *
 
@@ -192,6 +193,11 @@ class StraightLineUtil:
 
         self.pluginIsActive = False
 
+    def onClickButton(self):
+        self.iface.messageBar().pushMessage(
+          'Button clicked!',
+          Qgis.Info
+          )
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
@@ -225,6 +231,7 @@ class StraightLineUtil:
 
             # connect to provide cleanup on closing of dockwidget
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
+            self.dockwidget.clickButton.connect(self.onClickButton)
 
             # show the dockwidget
             # TODO: fix to allow choice of dock location

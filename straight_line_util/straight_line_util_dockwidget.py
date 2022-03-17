@@ -27,6 +27,8 @@ import os
 from qgis.PyQt import QtGui, QtWidgets, uic
 from qgis.PyQt.QtCore import pyqtSignal
 
+from qgis.core import QgsMessageLog
+
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'straight_line_util_dockwidget_base.ui'))
 
@@ -34,6 +36,8 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 class StraightLineUtilDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
 
     closingPlugin = pyqtSignal()
+
+    clickButton = pyqtSignal()
 
     def __init__(self, parent=None):
         """Constructor."""
@@ -45,6 +49,12 @@ class StraightLineUtilDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
 
+        self.testButton.clicked.connect(self.clickEvent)
+
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
+
+    def clickEvent(self):
+        self.clickButton.emit()
+
